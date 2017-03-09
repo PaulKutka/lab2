@@ -1,0 +1,1 @@
+var require ž require("")
