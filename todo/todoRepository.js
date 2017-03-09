@@ -1,28 +1,31 @@
 
-exports.repository = new Repository;
 
 class Repository {
 
-var todoList = []
+constructor(){
+    this.todoList = [];
+}
 
-export function getAll(){
+getAll(){
     return this.todoList;
 }
 
-export function findOne(id){
+ findOne(id){
     return this.todoList[id];
 }
 
-export function create(todoElement){
+create(todoElement){
     this.todoList.push(todoElement);
 }
 
-export function update(id, changedTodoElement){
+ update(id, changedTodoElement){
     this.todoList[id] = changedTodoElement;
     return this.todoList[id];
 }
 
-export function delete(id){
+ delete(id){
     this.todoList[id] = null;
 }
 }
+
+const repository = new Repository();
