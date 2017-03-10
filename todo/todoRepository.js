@@ -1,31 +1,30 @@
+const ToDo = require('./ToDo');
 
+let todoList = [];
 
-class Repository {
-
-constructor(){
-    this.todoList = [];
-}
-
-getAll(){
+function getAll(){
     return this.todoList;
 }
 
- findOne(id){
-    return this.todoList[id];
+function findOne(id){
+    this.todoList.forEach(function(element) {
+        if(element.id == id){
+            return this;
+        }
+    }, this);
 }
 
-create(todoElement){
+function create(todoElement){
     this.todoList.push(todoElement);
 }
 
- update(id, changedTodoElement){
+function update(id, changedTodoElement){
     this.todoList[id] = changedTodoElement;
     return this.todoList[id];
 }
 
- delete(id){
+function deleteElement(id){
     this.todoList[id] = null;
 }
-}
 
-const repository = new Repository();
+module.exports = {getAll, findOne, create, update, deleteElement};
