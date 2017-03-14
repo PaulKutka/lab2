@@ -1,6 +1,6 @@
 var expressApp   = require('../expressApp');
 var repository  = require('./todoRepository');
-
+var validator = require('./validation');
 
 expressApp.get('/', function(req, res) {
     let todoList = repository.getAll();
@@ -8,8 +8,18 @@ expressApp.get('/', function(req, res) {
 });
 
 expressApp.post('/post', function(req, res) {
+   let data = req.body;
 
+   let valid = true;
+
+
+   valid = validator.validateTitle(data.title, res);
+
+   valid = validator.validateIsDone(data.isDone, res);
+
+   if(valid){
    repository.create(req.body);
+   }
    res.end();
 });
 
@@ -19,7 +29,18 @@ expressApp.get('/:id', function(req, res){
 });
 
 expressApp.put('/:id', function(req, res){
-    repository.update(req.params.id, req.body);
+
+    let data = req.body;
+
+    let id = req.params.id;
+
+    valid = validator.validateTitle(data.title, res);
+
+    valid = validator.validateIsDone(data.isDone, res);
+
+    if(valid){
+    repository.update(req.params.id, data);
+    }
     return res.end();
 });
 

@@ -1,4 +1,3 @@
-const ToDo = require('./ToDo');
 let todoList = [];
 let lastId = 0;
 function getAll(){
