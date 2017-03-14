@@ -2,30 +2,28 @@ var expressApp   = require('../expressApp');
 var repository  = require('./todoRepository');
 
 
-
-expressApp.app.get('/', function(req, res) {
-
-    todoList = repository.getAll();
-    return res.end(todoList);
+expressApp.get('/', function(req, res) {
+    let todoList = repository.getAll();
+    return res.end(JSON.stringify(todoList));
 });
 
-expressApp.app.post('/post', function(req, res) {
-    
-    return res.end(repository.create(req));
+expressApp.post('/post', function(req, res) {
+
+   repository.create(req.body);
+   res.end();
 });
 
-expressApp.app.get('/:id', function(req, res){
-  return res.end(req.params.id);
+expressApp.get('/:id', function(req, res){
+  let todoElement = repository.findOne(req.params.id);
+    return res.end(JSON.stringify(todoElement));
 });
 
-expressApp.app.get('/get', function(req, res){
-  return res.end(req.params.id);
+expressApp.put('/:id', function(req, res){
+    repository.update(req.params.id, req.body);
+    return res.end();
 });
 
-expressApp.app.put(':id', function(req, res){
-  return res.end(req.params.id);
-});
-
-expressApp.app.delete(':id', function(req, res){
-  return res.end(req.params.id);
+expressApp.delete('/:id', function(req, res){
+  repository.deleteElement(req.params.id);
+  return res.end();
 });

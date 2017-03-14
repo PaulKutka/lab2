@@ -1,30 +1,48 @@
 const ToDo = require('./ToDo');
-
 let todoList = [];
-
+let lastId = 0;
 function getAll(){
-    return this.todoList;
+    return todoList;
 }
 
 function findOne(id){
-    this.todoList.forEach(function(element) {
-        if(element.id == id){
-            return this;
-        }
-    }, this);
+    return todoList.filter(function(element) {
+       return element.id == id;
+    });
 }
 
-function create(todoElement){
-    this.todoList.push(todoElement);
+function create(data){
+    let todoElement = {
+        id: lastId,
+        title:data.title,
+        description:data.description,
+        isDone:data.isDone,
+        creationDate: new Date(),
+        updateDate: new Date(),
+    }
+    todoList.push(todoElement);
+    lastId += 1;
 }
 
-function update(id, changedTodoElement){
-    this.todoList[id] = changedTodoElement;
-    return this.todoList[id];
+function update(id, data){
+    //Get element index in the array
+    let index = todoList.findIndex(element => element.id == id);
+
+    //Update an element in the array
+    todoList[index].title = data.title;
+    todoList[index].description = data.description;
+    todoList[index].isDone = data.isDone;
+    todoList[index].updateDate = new Date();
+
+
 }
 
 function deleteElement(id){
-    this.todoList[id] = null;
+    //Get element index in the array
+    let index = todoList.findIndex(element => element.id == id);
+    if(index > -1)
+    todoList.splice(index, 1);
 }
+
 
 module.exports = {getAll, findOne, create, update, deleteElement};
