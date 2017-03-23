@@ -1,11 +1,11 @@
-var validator = require('validator');
+const validator = require('validator');
 
 function validateTitle(title, res){
 if(!title){
    res.write("Title is empty");
    return false;
 }
-if(str.len > 100){
+if(title.len > 100){
     res.write("Title is too long");
     return false;
 }

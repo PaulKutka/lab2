@@ -1,29 +1,53 @@
 let todoList = [];
 let lastId = 0;
-function getAll(){
-    return todoList;
+function getAll(cb) {
+    try{
+    const todos = todoList;
+    return cb(null, todos);
+    } catch(e){
+        return cb(new Error("Something went wrong"), null);
+    }
 }
 
-function findOne(id){
-    return todoList.filter(function(element) {
-       return element.id == id;
-    });
-}
-
-function create(data){
+function create(data, cb) {
     let todoElement = {
         id: lastId,
-        title:data.title,
-        description:data.description,
-        isDone:data.isDone,
+        title: data.title,
+        description: data.description,
+        isDone: "Not done",
         creationDate: new Date(),
         updateDate: new Date(),
     }
-    todoList.push(todoElement);
-    lastId += 1;
+
+    try {
+        todoList.push(todoElement);
+        lastId += 1;
+    } catch (e) {
+        return cb(new Error('Something went wrong.'), null)
+    }
+
+    return cb(null, todoElement);
 }
 
-function update(id, data){
+function findOne(id, cb) {
+    try {
+        const todos = todoList.filter(function (element) {
+            element.id === id;
+        });
+
+        return cb(null, todos[0]);
+    } catch (e) {
+        return cb(new Error('No todo found'), null);
+    }
+
+}
+
+
+
+function update(id, data, cb) {
+
+
+    try{
     //Get element index in the array
     let index = todoList.findIndex(element => element.id == id);
 
@@ -33,15 +57,24 @@ function update(id, data){
     todoList[index].isDone = data.isDone;
     todoList[index].updateDate = new Date();
 
+    return cb(null, todoList[index]);
+    } catch(e){
+        return cb(new Error("Something Went Wrong"), null);
+    }
 
 }
 
-function deleteElement(id){
-    //Get element index in the array
+function deleteElement(id, cb) {
+   
+   try{
+
     let index = todoList.findIndex(element => element.id == id);
-    if(index > -1)
-    todoList.splice(index, 1);
+    if (index > -1)
+        todoList.splice(index, 1);
+} catch(e){
+       return cb(new Error("Something Went Wrong"));
+}
 }
 
 
-module.exports = {getAll, findOne, create, update, deleteElement};
+module.exports = { getAll, findOne, create, update, deleteElement };

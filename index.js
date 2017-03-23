@@ -1,1 +1,1 @@
-var app = require('./todo/todoAppService');
+require('./todo/todoAppService');
