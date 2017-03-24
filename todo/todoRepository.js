@@ -1,5 +1,10 @@
 let todoList = [];
 let lastId = 0;
+
+/**
+ * Get all todo elements
+ * @param {Callback} cb 
+ */
 function getAll(cb) {
     try{
     const todos = todoList;
@@ -9,6 +14,12 @@ function getAll(cb) {
     }
 }
 
+/**
+ * Insert a new todo element
+ * 
+ * @param {JSON} data 
+ * @param {*} cb 
+ */
 function create(data, cb) {
     let todoElement = {
         id: lastId,
@@ -29,6 +40,12 @@ function create(data, cb) {
     return cb(null, todoElement);
 }
 
+/**
+ * Find todo element by id
+ * 
+ * @param {Number} id 
+ * @param {*} cb 
+ */
 function findOne(id, cb) {
     try {
         const todos = todoList.filter(function (element) {
@@ -43,7 +60,13 @@ function findOne(id, cb) {
 }
 
 
-
+/**
+ * Update a todo element
+ * 
+ * @param {Number} id 
+ * @param {*} data 
+ * @param {*} cb 
+ */
 function update(id, data, cb) {
 
 
@@ -64,6 +87,13 @@ function update(id, data, cb) {
 
 }
 
+
+/**
+ * Delete a todo element
+ * 
+ * @param {Number} id 
+ * @param {*} cb 
+ */
 function deleteElement(id, cb) {
    
    try{

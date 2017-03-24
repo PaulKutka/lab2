@@ -1,6 +1,8 @@
 const express  = require('express');
 const bodyParser = require('body-parser');
 const router = express.Router();
+
+
 const app       = express()
 const validator = require('express-validator');
 //Require to parse body in json format

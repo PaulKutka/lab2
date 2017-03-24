@@ -1,4 +1,4 @@
-const app = require('../expressApp').app;
+const app = require('../todo/todoAppService');
 const request = require('supertest');
 const assert = require('assert');
 
@@ -7,7 +7,7 @@ describe('Test Todo Api', () =>  {
   describe('Repository is empty',() => {
     it('should return repository is empty', () => {
         return request(app)
-      .get('/todo/api/')
+      .get('/')
       .set('Accept', 'application/json')
       .expect(200, 'Repository is empty');
     });
