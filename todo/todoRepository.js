@@ -74,6 +74,12 @@ function update(id, data, cb) {
     //Get element index in the array
     let index = todoList.findIndex(element => element.id == id);
 
+
+    if(index === -1){
+
+        return cb(null, null)
+    }
+    
     //Update an element in the array
     todoList[index].title = data.title;
     todoList[index].description = data.description;

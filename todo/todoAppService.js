@@ -197,7 +197,7 @@ expressApp.put('/:id', function (req, res) {
         res.status(400).send(errors);
     } else {
         const id = parseInt(req.params.id);
-        repository.update(req.params.id, req.body, (error, todo) => {
+        repository.update(id, req.body, (error, todo) => {
             if (error) {
                 console.error(error);
                 res.status(500).send({
@@ -206,7 +206,15 @@ expressApp.put('/:id', function (req, res) {
                 return;
             }
 
+            if (!todo) {
+            res.status(404).send({
+                message: "Todo is not found"
+            });
+            return;
+        } else {
+
             res.status(200).send(todo);
+        }
 
         });
     }
