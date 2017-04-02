@@ -240,8 +240,15 @@ expressApp.delete('/:id', function (req, res) {
                 message: 'Internal error. Please try again.'
             });
         }
-        return res.end();
+        
+        return res.status(200).send({
+          message: 'Deleted successfully'
+      })
+
     });
+
+      
+      
 });
 
 module.exports = expressApp;

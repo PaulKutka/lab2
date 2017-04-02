@@ -25,7 +25,7 @@ function create(data, cb) {
         id: lastId,
         title: data.title,
         description: data.description,
-        isDone: "Not done",
+        isDone: "false",
         creationDate: new Date(),
         updateDate: new Date(),
     }
@@ -107,6 +107,8 @@ function deleteElement(id, cb) {
     let index = todoList.findIndex(element => element.id == id);
     if (index > -1)
         todoList.splice(index, 1);
+
+    return cb(null);
 } catch(e){
        return cb(new Error("Something Went Wrong"));
 }
