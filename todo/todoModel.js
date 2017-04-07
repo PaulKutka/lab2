@@ -1,14 +1,17 @@
 let mongoose = require('../mongooseClient');
+
 let autoIncrement = require('mongoose-auto-increment');
 
+autoIncrement.initialize(mongoose);
 
 let todoSchema = mongoose.Schema({
-    _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
-    title: String,
-    description: String, //maybe TExt
-    isDone: Boolean,
+    title: {type: String, require: true},
+    description: {type: String, required: true, maxlength: 100}, 
+    isDone: {type: Boolean, required: true},
     creationDate: Date,
     updateDate: Date
 })
+
+todoSchema.plugin(autoIncrement.plugin, 'Todo');
 
 module.exports = todoSchema;

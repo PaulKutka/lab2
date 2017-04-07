@@ -16,12 +16,6 @@ function getAll(cb) {
         return cb(null, todos);
     })
 
-    // try{
-    // const todos = todoList;
-    // return cb(null, todos);
-    // } catch(e){
-    //     return cb(new Error("Something went wrong"), null);
-    // }
 }
 
 /**
@@ -45,14 +39,6 @@ function create(data, cb) {
         }
         return cb(null, todo);
     })
-
-    //     todoList.push(todoElement);
-    //     lastId += 1;
-    // } catch (e) {
-    //     return cb(new Error('Something went wrong.'), null)
-    // }
-
-    // return cb(null, todoElement);
 }
 
 /**
@@ -82,7 +68,7 @@ function findOne(id, cb) {
  */
 function update(id, data, cb) {
 
-    Todo.find({ _id: id }, (error, todo) => {
+    Todo.findById(id, (error, todo) => {
         if (error) {
             return cb(new Error('No todo found'), null);
         }
@@ -115,25 +101,13 @@ function deleteElement(id, cb) {
             return cb(new Error('No todo found'), null);
         }
         return cb(null, todo);
-    }).remove((error) => {
-        if(error){
-         return cb(new Error("Could not delete"));
-        }
-        
-    }
+    })
+        .remove((error) => {
+            if (error) {
+                return cb(new Error("Could not delete"));
+            }
+        })
 
-    )
-
-    // try {
-
-    //     let index = todoList.findIndex(element => element.id == id);
-    //     if (index > -1)
-    //         todoList.splice(index, 1);
-
-    //     return cb(null);
-    // } catch (e) {
-    //     return cb(new Error("Something Went Wrong"));
-    // }
 }
 
 
