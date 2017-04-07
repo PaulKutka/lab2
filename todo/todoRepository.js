@@ -1,17 +1,27 @@
-let todoList = [];
-let lastId = 0;
+let mongoose = require("../mongooseClient")
+let todoSchema = require("./todoModel")
+
+let Todo = mongoose.model('Todo', todoSchema);
+//let lastId = 0;
 
 /**
  * Get all todo elements
  * @param {Callback} cb 
  */
 function getAll(cb) {
-    try{
-    const todos = todoList;
-    return cb(null, todos);
-    } catch(e){
-        return cb(new Error("Something went wrong"), null);
-    }
+    Todo.find((error, todos) => {
+        if (error) {
+            return cb(new Error("Something went wrong"), null);
+        }
+        return cb(null, todos);
+    })
+
+    // try{
+    // const todos = todoList;
+    // return cb(null, todos);
+    // } catch(e){
+    //     return cb(new Error("Something went wrong"), null);
+    // }
 }
 
 /**
@@ -21,23 +31,28 @@ function getAll(cb) {
  * @param {*} cb 
  */
 function create(data, cb) {
-    let todoElement = {
-        id: lastId,
+    let todo = new Todo({
         title: data.title,
         description: data.description,
         isDone: "false",
         creationDate: new Date(),
         updateDate: new Date(),
-    }
+    });
 
-    try {
-        todoList.push(todoElement);
-        lastId += 1;
-    } catch (e) {
-        return cb(new Error('Something went wrong.'), null)
-    }
+    todo.save((error, todo) => {
+        if (error) {
+            return cb(new Error('Something went wrong.'), null)
+        }
+        return cb(null, todo);
+    })
 
-    return cb(null, todoElement);
+    //     todoList.push(todoElement);
+    //     lastId += 1;
+    // } catch (e) {
+    //     return cb(new Error('Something went wrong.'), null)
+    // }
+
+    // return cb(null, todoElement);
 }
 
 /**
@@ -47,15 +62,13 @@ function create(data, cb) {
  * @param {*} cb 
  */
 function findOne(id, cb) {
-    try {
-        const todos = todoList.filter(function (element) {
-            element.id === id;
-        });
 
-        return cb(null, todos[0]);
-    } catch (e) {
-        return cb(new Error('No todo found'), null);
-    }
+    Todo.find({ _id: id }, (error, todo) => {
+        if (error) {
+            return cb(new Error('No todo found'), null);
+        }
+        return cb(null, todo);
+    })
 
 }
 
@@ -69,28 +82,23 @@ function findOne(id, cb) {
  */
 function update(id, data, cb) {
 
+    Todo.find({ _id: id }, (error, todo) => {
+        if (error) {
+            return cb(new Error('No todo found'), null);
+        }
 
-    try{
-    //Get element index in the array
-    let index = todoList.findIndex(element => element.id == id);
+        todo.title = data.title;
+        todo.description = data.description;
+        todo.isDone = data.isDone;
+        todo.updateDate = new Date();
 
-
-    if(index === -1){
-
-        return cb(null, null)
-    }
-    
-    //Update an element in the array
-    todoList[index].title = data.title;
-    todoList[index].description = data.description;
-    todoList[index].isDone = data.isDone;
-    todoList[index].updateDate = new Date();
-
-    return cb(null, todoList[index]);
-    } catch(e){
-        return cb(new Error("Something Went Wrong"), null);
-    }
-
+        todo.save((error, todo) => {
+            if (error) {
+                return cb(new Error('Something went wrong.'), null)
+            }
+            return cb(null, todo);
+        })
+    });
 }
 
 
@@ -101,17 +109,31 @@ function update(id, data, cb) {
  * @param {*} cb 
  */
 function deleteElement(id, cb) {
-   
-   try{
 
-    let index = todoList.findIndex(element => element.id == id);
-    if (index > -1)
-        todoList.splice(index, 1);
+    Todo.find({ _id: id }, (error, todo) => {
+        if (error) {
+            return cb(new Error('No todo found'), null);
+        }
+        return cb(null, todo);
+    }).remove((error) => {
+        if(error){
+         return cb(new Error("Could not delete"));
+        }
+        
+    }
 
-    return cb(null);
-} catch(e){
-       return cb(new Error("Something Went Wrong"));
-}
+    )
+
+    // try {
+
+    //     let index = todoList.findIndex(element => element.id == id);
+    //     if (index > -1)
+    //         todoList.splice(index, 1);
+
+    //     return cb(null);
+    // } catch (e) {
+    //     return cb(new Error("Something Went Wrong"));
+    // }
 }
 
 
