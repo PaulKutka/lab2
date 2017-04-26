@@ -67,7 +67,6 @@ function findOne(id, cb) {
  * @param {*} cb 
  */
 function update(id, data, cb) {
-
     Todo.findById(id, (error, todo) => {
         if (error) {
             return cb(new Error('No todo found'), null);
